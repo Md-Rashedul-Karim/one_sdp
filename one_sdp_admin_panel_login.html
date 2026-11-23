@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE SDP - Enterprise Telecom Admin Panel</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Tailwind Config for Custom Fonts & Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        canvas: '#eef2f6',
+                        brandBlue: '#2563eb',
+                        brandDark: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar hiding for clean horizontal desktop navigation */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            background-color: #eef2f6;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#eef2f6] text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFICATION / MESSAGE BOX (Replaces browser alert)             -->
+    <!-- ===================================================================== -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ===================================================================== -->
+    <!-- 1. LOGIN PAGE VIEW (Default Initial View)                             -->
+    <!-- ===================================================================== -->
+    <section id="login-view" class="min-h-screen w-full flex flex-col justify-center items-center px-4 py-8 bg-[#eef2f6]">
+        <div class="w-full max-w-md bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <!-- Top Accent Bar -->
+            <div class="h-1.5 w-full bg-blue-600"></div>
+            
+            <div class="p-8">
+                <!-- Brand Header matching Navbar Logo -->
+                <div class="flex flex-col items-center justify-center mb-7">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <!-- Blue Rounded Megaphone Icon -->
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+                            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 3a1 1 0 0 0-1 .26L11.71 7H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1.22l1.62 4.86A1.5 1.5 0 0 0 10.26 21h1.48a1.5 1.5 0 0 0 1.42-1.97L11.82 15h.11L17 18.74A1 1 0 0 0 18.6 18V4A1 1 0 0 0 18 3zm-1 13.06-4.4-3.06H6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h6.6L17 5.94v10.12zM20.5 8.5a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1z"/>
+                            </svg>
+                        </div>
+                        <span class="text-2xl font-bold tracking-tight text-slate-800">ONE <span class="text-slate-700 font-semibold">SDP</span></span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Service Delivery Platform & Telecom Operations</p>
+                </div>
+
+                <!-- Error Banner (Hidden by default) -->
+                <div id="login-error" class="hidden mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                    <svg class="w-4 h-4 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span id="login-error-text">Invalid credentials. Please check your username and password.</span>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-4" novalidate>
+                    <div>
+                        <label for="login-username" class="block text-xs font-semibold text-slate-700 mb-1.5">Username or Email</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </span>
+                            <input type="text" id="login-username" value="rayhan@onesdp.com" placeholder="Enter username or email"
+                                class="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label for="login-password" class="block text-xs font-semibold text-slate-700">Password</label>
+                            <button type="button" id="forgot-pass-btn" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Forgot password?</button>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </span>
+                            <input type="password" id="login-password" value="••••••••" placeholder="Enter your password"
+                                class="w-full pl-9 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 transition">
+                            <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600" title="Show/Hide Password">
+                                <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" id="remember-me" checked class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-xs text-slate-600">Remember this session</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="login-submit-btn"
+                        class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold rounded-lg shadow-sm transition flex items-center justify-center gap-2">
+                        <span>Sign In to ONE SDP</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Quick Demo Helper -->
+                <div class="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+                    <span>Demo Account: <strong class="text-slate-700">Rayhan</strong> (User)</span>
+                    <button type="button" id="quick-demo-login" class="px-3 py-1.5 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold transition">
+                        Quick Demo Login
+                    </button>
+                </div>
+            </div>
+        </div>
+        <p class="mt-5 text-xs text-slate-400">&copy; 2026 ONE SDP Telecom Gateway. All rights reserved.</p>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 2. MAIN ADMIN PANEL VIEW (Hidden until logged in)                     -->
+    <!-- ===================================================================== -->
+    <div id="admin-panel-view" class="hidden flex-col min-h-screen w-full">
+
+        <!-- TOP NAVIGATION BAR (Matches Screenshot Design) -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-30 w-full">
+            <div class="w-full px-3 sm:px-5 h-14 flex items-center justify-between gap-2">
+                
+                <!-- Left: Mobile Drawer Button + Brand Logo -->
+                <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" id="mobile-menu-btn" class="xl:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Toggle Menu">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+
+                    <a href="#home" id="brand-home-link" class="flex items-center gap-2 select-none pr-2">
+                        <!-- Blue Rounded Square Megaphone Icon -->
+                        <div class="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-xs">
+                            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 3a1 1 0 0 0-1 .26L11.71 7H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1.22l1.62 4.86A1.5 1.5 0 0 0 10.26 21h1.48a1.5 1.5 0 0 0 1.42-1.97L11.82 15h.11L17 18.74A1 1 0 0 0 18.6 18V4A1 1 0 0 0 18 3zm-1 13.06-4.4-3.06H6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h6.6L17 5.94v10.12zM20.5 8.5a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1z"/>
+                            </svg>
+                        </div>
+                        <span class="text-[17px] font-bold tracking-tight text-slate-800 whitespace-nowrap">ONE <span class="font-semibold text-slate-700">SDP</span></span>
+                    </a>
+                </div>
+
+                <!-- Center: Horizontal 13 Navigation Items (Exact Match to Screenshot) -->
+                <nav id="desktop-nav" class="hidden xl:flex items-center h-full overflow-x-auto no-scrollbar space-x-1 flex-1 justify-start pl-3">
+                    <!-- Populated dynamically via jQuery to ensure consistent active states across desktop & mobile -->
+                </nav>
+
+                <!-- Right: User Profile ("Rayhan" / "User") + Dropdown -->
+                <div class="relative shrink-0">
+                    <button type="button" id="user-profile-btn" class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-slate-50 transition focus:outline-none">
+                        <!-- Circular Dark User Silhouette Avatar matching screenshot -->
+                        <div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden">
+                            <svg class="w-6 h-6 text-slate-900 mt-1" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-5.33 0-8 2.67-8 6v2h16v-2c0-3.33-2.67-6-8-6z"/>
+                            </svg>
+                        </div>
+                        <div class="text-left leading-tight">
+                            <div id="nav-user-name" class="text-xs font-semibold text-slate-800">Rayhan</div>
+                            <div id="nav-user-role" class="text-[11px] text-slate-400 font-normal">User</div>
+                        </div>
+                        <svg class="w-3.5 h-3.5 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- User Dropdown Menu -->
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-1.5 w-52 bg-white rounded-xl shadow-lg border border-slate-200 py-1.5 z-40">
+                        <div class="px-4 py-2.5 border-b border-slate-100">
+                            <p class="text-xs font-semibold text-slate-800" id="dropdown-user-name">Rayhan</p>
+                            <p class="text-[11px] text-slate-500 truncate" id="dropdown-user-email">rayhan@onesdp.com</p>
+                        </div>
+                        <button type="button" data-modal-action="profile" class="user-menu-item w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            <span>My Profile</span>
+                        </button>
+                        <button type="button" data-modal-action="password" class="user-menu-item w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                            <span>Change Password</span>
+                        </button>
+                        <div class="my-1 border-t border-slate-100"></div>
+                        <button type="button" id="logout-btn" class="w-full text-left px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile / Tablet Responsive Navigation Drawer -->
+            <div id="mobile-nav-drawer" class="hidden xl:hidden bg-white border-t border-slate-200 px-3 py-3 max-h-[75vh] overflow-y-auto shadow-md">
+                <div id="mobile-nav-list" class="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                    <!-- Populated via jQuery -->
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN WORKSPACE CANVAS (#eef2f6) -->
+        <main id="main-content" class="flex-1 w-full max-w-[1600px] mx-auto px-4 sm:px-6 py-6">
+            <!-- Dynamic Section Content Injected via jQuery -->
+        </main>
+
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- INTERACTIVE MODAL (For Quick Actions, Profile, Password, Details)     -->
+    <!-- ===================================================================== -->
+    <div id="app-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-[1px] flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-200 w-full max-w-lg overflow-hidden transform transition-all">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 id="modal-title" class="text-sm font-bold text-slate-800">Modal Title</h3>
+                <button type="button" id="close-modal-btn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-body" class="p-5 text-sm text-slate-600">
+                <!-- Dynamic Modal Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JQUERY APPLICATION LOGIC & STATE MANAGEMENT                           -->
+    <!-- ===================================================================== -->
+    <script>
+        $(document).ready(function () {
+            
+            // -----------------------------------------------------------------
+            // 1. NAVIGATION ITEMS DEFINITION (Exact 13 Tabs from Screenshot)
+            // -----------------------------------------------------------------
+            const navItems = [
+                { id: 'home', label: 'Home', icon: 'home' },
+                { id: 'operation', label: 'Operation', icon: 'doc' },
+                { id: 'portal', label: 'Portal', icon: 'doc' },
+                { id: 'sdp', label: 'SDP', icon: 'doc' },
+                { id: 'gateway', label: 'Gateway', icon: 'doc' },
+                { id: 'marketing', label: 'Marketing', icon: 'doc' },
+                { id: 'settings', label: 'Settings', icon: 'doc' },
+                { id: 'promotion-report', label: 'Promotion Report', icon: 'doc' },
+                { id: 'gsd-robi-dob', label: 'GSD Robi Dob', icon: 'doc' },
+                { id: 'robi-dob', label: 'Robi Dob', icon: 'doc' },
+                { id: 'blink-dob', label: 'Blink Dob', icon: 'doc' },
+                { id: 'gp-global', label: 'GP Global', icon: 'doc' },
+                { id: 'cso-tool', label: 'CSO TOOl', icon: 'doc' }
+            ];
+
+            let activeTab = 'home';
+
+            // SVG Icon Helper matching the crisp outline icons in the screenshot
+            function getNavIconSvg(type, isActive) {
+                const colorClass = isActive ? 'text-blue-600' : 'text-slate-500';
+                if (type === 'home') {
+                    return `<svg class="w-3.5 h-3.5 ${colorClass} shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/>
+                    </svg>`;
+                }
+                return `<svg class="w-3.5 h-3.5 ${colorClass} shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>`;
+            }
+
+            // -----------------------------------------------------------------
+            // 2. TOAST NOTIFICATION SYSTEM (Non-blocking UI Feedback)
+            // -----------------------------------------------------------------
+            function showToast(message, type = 'success') {
+                const bgMap = {
+                    success: 'bg-slate-800 text-white border-slate-700',
+                    info: 'bg-blue-600 text-white border-blue-500',
+                    error: 'bg-red-600 text-white border-red-500'
+                };
+                const toast = $(`
+                    <div class="pointer-events-auto px-4 py-2.5 rounded-lg shadow-lg border text-xs font-medium flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-2 ${bgMap[type] || bgMap.success}">
+                        <span>${message}</span>
+                    </div>
+                `);
+                $('#toast-container').append(toast);
+                setTimeout(() => toast.removeClass('opacity-0 translate-y-2'), 10);
+                setTimeout(() => {
+                    toast.addClass('opacity-0 translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // -----------------------------------------------------------------
+            // 3. MOCK TELECOM & SDP DATA FOR ALL 13 TABS
+            // -----------------------------------------------------------------
+            const transactionsData = [
+                { id: 'TXN-984210', msisdn: '8801819204411', operator: 'Robi Dob', service: 'GSD Gaming Pack Daily', amount: '৳ 5.00', status: 'Success', time: '2 mins ago' },
+                { id: 'TXN-984209', msisdn: '8801911883209', operator: 'Blink Dob', service: 'Banglalink Music Pro', amount: '৳ 10.00', status: 'Success', time: '4 mins ago' },
+                { id: 'TXN-984208', msisdn: '8801711509821', operator: 'GP Global', service: 'GP Global Digital Hub', amount: '৳ 15.00', status: 'Success', time: '6 mins ago' },
+                { id: 'TXN-984207', msisdn: '8801847112233', operator: 'GSD Robi Dob', service: 'Robi Sports Live Weekly', amount: '৳ 20.00', status: 'Pending', time: '9 mins ago' },
+                { id: 'TXN-984206', msisdn: '8801922456789', operator: 'Blink Dob', service: 'Blink Video Zone', amount: '৳ 5.00', status: 'Failed', time: '12 mins ago' },
+                { id: 'TXN-984205', msisdn: '8801713998877', operator: 'GP Global', service: 'GP Cloud App Store', amount: '৳ 30.00', status: 'Success', time: '15 mins ago' },
+                { id: 'TXN-984204', msisdn: '8801817654321', operator: 'Robi Dob', service: 'Robi E-Book Unlimited', amount: '৳ 10.00', status: 'Success', time: '18 mins ago' }
+            ];
+
+            const tabMeta = {
+                'home': {
+                    title: 'ONE SDP Operations Overview',
+                    subtitle: 'Real-time carrier billing, Direct Operator Billing (DOB) gateways, and subscriber metrics.',
+                    badge: 'Live System Healthy'
+                },
+                'operation': {
+                    title: 'Operation Control Center',
+                    subtitle: 'Monitor active billing queues, retry schedulers, and subscriber lifecycle jobs.',
+                    badge: '24/7 Active Queue'
+                },
+                'portal': {
+                    title: 'Content & Partner Portals',
+                    subtitle: 'Manage WAP/Web landing portals, consent flows, and partner callback URLs.',
+                    badge: '18 Portals Online'
+                },
+                'sdp': {
+                    title: 'SDP Core Services & Subscriptions',
+                    subtitle: 'Configure subscription plans, renewal cycles, grace periods, and charging tariffs.',
+                    badge: 'SDP v4.2 Engine'
+                },
+                'gateway': {
+                    title: 'Telecom Operator Gateways',
+                    subtitle: 'SMPP, Diameter, and REST API connections for Robi, Banglalink, and Grameenphone.',
+                    badge: '99.98% Uptime'
+                },
+                'marketing': {
+                    title: 'Marketing & Campaign Manager',
+                    subtitle: 'Traffic sources, CPA affiliate links, and promotional SMS blast configurations.',
+                    badge: '12 Active Campaigns'
+                },
+                'settings': {
+                    title: 'Platform & Security Settings',
+                    subtitle: 'IP whitelisting, API credentials, webhook secrets, and role-based access control.',
+                    badge: 'System Config'
+                },
+                'promotion-report': {
+                    title: 'Promotion & Campaign Analytics Report',
+                    subtitle: 'Conversion funnels, click-to-consent ratios, and net revenue by partner.',
+                    badge: 'Updated Real-Time'
+                },
+                'gsd-robi-dob': {
+                    title: 'GSD Robi DOB Channel',
+                    subtitle: 'Direct Operator Billing integration and AOC consent logs for GSD Robi services.',
+                    badge: 'Robi Axiata API'
+                },
+                'robi-dob': {
+                    title: 'Robi DOB Billing Ledger',
+                    subtitle: 'Standard Robi Direct Operator Billing charging requests, renewals, and unsubscriptions.',
+                    badge: 'Connected • 42 TPS'
+                },
+                'blink-dob': {
+                    title: 'Blink DOB (Banglalink) Gateway',
+                    subtitle: 'Banglalink Direct Operator Billing charging API, OTP verification, and status logs.',
+                    badge: 'Connected • 31 TPS'
+                },
+                'gp-global': {
+                    title: 'GP Global Billing Integration',
+                    subtitle: 'Grameenphone Global DOB API traffic, carrier settlements, and consent verifications.',
+                    badge: 'Connected • 55 TPS'
+                },
+                'cso-tool': {
+                    title: 'CSO TOOl — Customer Support Lookup',
+                    subtitle: 'Instant MSISDN lookup, active subscription check, and one-click deactivation for support agents.',
+                    badge: 'Support Desk Tool'
+                }
+            };
+
+            // -----------------------------------------------------------------
+            // 4. RENDER NAVIGATION BARS (Desktop & Mobile)
+            // -----------------------------------------------------------------
+            function renderNavigation() {
+                const $desktopNav = $('#desktop-nav');
+                const $mobileList = $('#mobile-nav-list');
+                $desktopNav.empty();
+                $mobileList.empty();
+
+                navItems.forEach(item => {
+                    const isActive = item.id === activeTab;
+                    
+                    // Desktop Horizontal Link (Exact match to screenshot: crisp text, bottom blue border on active)
+                    const desktopClasses = isActive
+                        ? 'text-blue-600 border-b-2 border-blue-600 font-medium'
+                        : 'text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal';
+
+                    const $desktopLink = $(`
+                        <button type="button" data-tab="${item.id}"
+                            class="nav-tab-btn h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors focus:outline-none ${desktopClasses}">
+                            ${getNavIconSvg(item.icon, isActive)}
+                            <span>${item.label}</span>
+                        </button>
+                    `);
+                    $desktopNav.append($desktopLink);
+
+                    // Mobile Drawer Link
+                    const mobileClasses = isActive
+                        ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-200'
+                        : 'text-slate-700 hover:bg-slate-50 font-medium border border-transparent';
+
+                    const $mobileLink = $(`
+                        <button type="button" data-tab="${item.id}"
+                            class="nav-tab-btn w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition ${mobileClasses}">
+                            ${getNavIconSvg(item.icon, isActive)}
+                            <span>${item.label}</span>
+                        </button>
+                    `);
+                    $mobileList.append($mobileLink);
+                });
+            }
+
+            // -----------------------------------------------------------------
+            // 5. RENDER MAIN TAB CONTENT
+            // -----------------------------------------------------------------
+            function getStatusBadge(status) {
+                if (status === 'Success' || status === 'Active' || status === 'Connected') {
+                    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>${status}</span>`;
+                }
+                if (status === 'Pending' || status === 'Grace') {
+                    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>${status}</span>`;
+                }
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-50 text-red-700 border border-red-200/70"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>${status}</span>`;
+            }
+
+            function renderTabContent(tabId) {
+                const meta = tabMeta[tabId] || tabMeta['home'];
+                const $main = $('#main-content');
+
+                // Special Interactive View for CSO TOOl (Customer Support MSISDN Lookup)
+                if (tabId === 'cso-tool') {
+                    $main.html(`
+                        <div class="space-y-5">
+                            <!-- Header -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div>
+                                    <h1 class="text-lg font-bold text-slate-800">${meta.title}</h1>
+                                    <p class="text-xs text-slate-500 mt-0.5">${meta.subtitle}</p>
+                                </div>
+                                <span class="self-start sm:self-auto px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">${meta.badge}</span>
+                            </div>
+
+                            <!-- MSISDN Search Card -->
+                            <div class="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
+                                <form id="cso-search-form" class="flex flex-col sm:flex-row gap-3">
+                                    <div class="flex-1">
+                                        <label class="block text-xs font-semibold text-slate-700 mb-1">Subscriber MSISDN (Mobile Number)</label>
+                                        <input type="text" id="cso-msisdn-input" value="8801819204411" placeholder="e.g., 88018XXXXXXXX or 88017XXXXXXXX"
+                                            class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-blue-600">
+                                    </div>
+                                    <div class="sm:w-48">
+                                        <label class="block text-xs font-semibold text-slate-700 mb-1">Operator</label>
+                                        <select id="cso-operator-select" class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-blue-600">
+                                            <option value="ALL">All Operators</option>
+                                            <option value="Robi Dob">Robi / Airtel</option>
+                                            <option value="Blink Dob">Banglalink</option>
+                                            <option value="GP Global">Grameenphone</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex items-end">
+                                        <button type="submit" class="w-full sm:w-auto px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition">
+                                            Search Subscriber
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <!-- CSO Lookup Result -->
+                                <div id="cso-result-box" class="mt-5 pt-5 border-t border-slate-100">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm font-bold text-slate-800" id="cso-res-msisdn">8801819204411</span>
+                                                ${getStatusBadge('Active')}
+                                            </div>
+                                            <p class="text-xs text-slate-500">Service: <strong class="text-slate-700">GSD Gaming Pack Daily</strong> • Channel: <strong class="text-slate-700">GSD Robi Dob</strong></p>
+                                            <p class="text-xs text-slate-500">Activated: 2026-11-18 14:22:10 • Last Charged: ৳ 5.00 (Today 08:15 AM)</p>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <button type="button" id="cso-unsub-btn" class="px-3.5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition">
+                                                Deactivate Subscription
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    return;
+                }
+
+                // Filter rows if viewing an operator-specific DOB tab
+                let filteredRows = transactionsData;
+                if (tabId === 'robi-dob') filteredRows = transactionsData.filter(r => r.operator.includes('Robi'));
+                if (tabId === 'gsd-robi-dob') filteredRows = transactionsData.filter(r => r.operator === 'GSD Robi Dob' || r.operator === 'Robi Dob');
+                if (tabId === 'blink-dob') filteredRows = transactionsData.filter(r => r.operator === 'Blink Dob');
+                if (tabId === 'gp-global') filteredRows = transactionsData.filter(r => r.operator === 'GP Global');
+
+                const rowsHtml = filteredRows.map(row => `
+                    <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 last:border-none">
+                        <td class="px-4 py-3 text-xs font-semibold text-blue-600 whitespace-nowrap">${row.id}</td>
+                        <td class="px-4 py-3 text-xs font-mono text-slate-700 whitespace-nowrap">${row.msisdn}</td>
+                        <td class="px-4 py-3 text-xs font-medium text-slate-700 whitespace-nowrap">${row.operator}</td>
+                        <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">${row.service}</td>
+                        <td class="px-4 py-3 text-xs font-semibold text-slate-800 whitespace-nowrap">${row.amount}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${getStatusBadge(row.status)}</td>
+                        <td class="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">${row.time}</td>
+                        <td class="px-4 py-3 text-right whitespace-nowrap">
+                            <button type="button" class="view-txn-btn text-xs font-medium text-blue-600 hover:text-blue-800 hover:underline" data-txn='${JSON.stringify(row)}'>
+                                Details
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                $main.html(`
+                    <div class="space-y-5">
+                        <!-- Page Title & Quick Action Bar -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <div class="flex items-center gap-2.5">
+                                    <h1 class="text-lg font-bold text-slate-800">${meta.title}</h1>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">${meta.badge}</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-0.5">${meta.subtitle}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" id="refresh-data-btn" class="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold shadow-2xs transition flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    <span>Refresh</span>
+                                </button>
+                                <button type="button" id="new-service-btn" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-2xs transition flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                    <span>New Service Config</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 4 KPI Metric Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-medium text-slate-500">Active Subscribers</span>
+                                    <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    </span>
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-between">
+                                    <span class="text-xl font-bold text-slate-800">1,482,910</span>
+                                    <span class="text-[11px] font-semibold text-emerald-600">+4.2%</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-medium text-slate-500">Today's DOB Revenue</span>
+                                    <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    </span>
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-between">
+                                    <span class="text-xl font-bold text-slate-800">৳ 642,850</span>
+                                    <span class="text-[11px] font-semibold text-emerald-600">+8.7%</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-medium text-slate-500">Gateway Throughput</span>
+                                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    </span>
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-between">
+                                    <span class="text-xl font-bold text-slate-800">128 TPS</span>
+                                    <span class="text-[11px] font-medium text-slate-500">Avg 45ms</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-medium text-slate-500">Charging Success Rate</span>
+                                    <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    </span>
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-between">
+                                    <span class="text-xl font-bold text-slate-800">96.4%</span>
+                                    <span class="text-[11px] font-semibold text-emerald-600">Optimal</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Operator Channel Quick Status Strip -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div class="bg-white rounded-xl border border-slate-200/80 px-4 py-3 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] text-slate-400 font-medium">GSD Robi Dob</p>
+                                    <p class="text-xs font-bold text-slate-800 mt-0.5">৳ 184,200</p>
+                                </div>
+                                ${getStatusBadge('Connected')}
+                            </div>
+                            <div class="bg-white rounded-xl border border-slate-200/80 px-4 py-3 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] text-slate-400 font-medium">Robi Dob</p>
+                                    <p class="text-xs font-bold text-slate-800 mt-0.5">৳ 152,900</p>
+                                </div>
+                                ${getStatusBadge('Connected')}
+                            </div>
+                            <div class="bg-white rounded-xl border border-slate-200/80 px-4 py-3 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] text-slate-400 font-medium">Blink Dob</p>
+                                    <p class="text-xs font-bold text-slate-800 mt-0.5">৳ 119,450</p>
+                                </div>
+                                ${getStatusBadge('Connected')}
+                            </div>
+                            <div class="bg-white rounded-xl border border-slate-200/80 px-4 py-3 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] text-slate-400 font-medium">GP Global</p>
+                                    <p class="text-xs font-bold text-slate-800 mt-0.5">৳ 186,300</p>
+                                </div>
+                                ${getStatusBadge('Connected')}
+                            </div>
+                        </div>
+
+                        <!-- Filterable Transactions Table -->
+                        <div class="bg-white rounded-xl border border-slate-200/80 shadow-2xs overflow-hidden">
+                            <div class="px-5 py-3.5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <h2 class="text-sm font-bold text-slate-800">Recent SDP & DOB Charging Logs</h2>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" id="table-search-input" placeholder="Filter MSISDN, ID, or Service..."
+                                        class="w-full sm:w-64 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-blue-600">
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50/80 border-b border-slate-200/70 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                                            <th class="px-4 py-3">Txn ID</th>
+                                            <th class="px-4 py-3">MSISDN</th>
+                                            <th class="px-4 py-3">Operator Channel</th>
+                                            <th class="px-4 py-3">Service Name</th>
+                                            <th class="px-4 py-3">Tariff</th>
+                                            <th class="px-4 py-3">Status</th>
+                                            <th class="px-4 py-3">Time</th>
+                                            <th class="px-4 py-3 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="txn-table-body">
+                                        ${rowsHtml}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }
+
+            // -----------------------------------------------------------------
+            // 6. AUTHENTICATION & VIEW SWITCHING (Login <-> Admin Panel)
+            // -----------------------------------------------------------------
+            function enterAdminPanel(userEmail) {
+                const displayName = userEmail.includes('rayhan') ? 'Rayhan' : userEmail.split('@')[0];
+                const formattedName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+                
+                $('#nav-user-name, #dropdown-user-name').text(formattedName);
+                $('#dropdown-user-email').text(userEmail);
+
+                sessionStorage.setItem('onesdp_logged_in', 'true');
+                sessionStorage.setItem('onesdp_user_email', userEmail);
+
+                $('#login-view').addClass('hidden');
+                $('#admin-panel-view').removeClass('hidden').addClass('flex');
+
+                renderNavigation();
+                renderTabContent(activeTab);
+            }
+
+            function logoutToLogin() {
+                sessionStorage.removeItem('onesdp_logged_in');
+                sessionStorage.removeItem('onesdp_user_email');
+                $('#user-dropdown').addClass('hidden');
+                $('#admin-panel-view').addClass('hidden').removeClass('flex');
+                $('#login-view').removeClass('hidden');
+                showToast('Logged out of ONE SDP safely.', 'info');
+            }
+
+            // Check existing session on load
+            if (sessionStorage.getItem('onesdp_logged_in') === 'true') {
+                enterAdminPanel(sessionStorage.getItem('onesdp_user_email') || 'rayhan@onesdp.com');
+            }
+
+            // Toggle Password Visibility
+            $('#toggle-password').on('click', function () {
+                const $pwd = $('#login-password');
+                const type = $pwd.attr('type') === 'password' ? 'text' : 'password';
+                $pwd.attr('type', type);
+            });
+
+            // Login Form Submit
+            $('#login-form').on('submit', function (e) {
+                e.preventDefault();
+                const username = $.trim($('#login-username').val());
+                const password = $.trim($('#login-password').val());
+
+                if (!username || !password) {
+                    $('#login-error-text').text('Please enter both your username/email and password.');
+                    $('#login-error').removeClass('hidden');
+                    return;
+                }
+
+                $('#login-error').addClass('hidden');
+                const email = username.includes('@') ? username : `${username}@onesdp.com`;
+                enterAdminPanel(email);
+                showToast('Welcome back to ONE SDP Admin Panel!', 'success');
+            });
+
+            // Quick Demo Login Button
+            $('#quick-demo-login').on('click', function () {
+                $('#login-username').val('rayhan@onesdp.com');
+                $('#login-password').val('demo1234');
+                $('#login-error').addClass('hidden');
+                enterAdminPanel('rayhan@onesdp.com');
+                showToast('Signed in with Demo Account (Rayhan).', 'success');
+            });
+
+            // Forgot Password Helper
+            $('#forgot-pass-btn').on('click', function () {
+                showToast('Password reset link sent to your registered admin email.', 'info');
+            });
+
+            // Logout Button
+            $('#logout-btn').on('click', function () {
+                logoutToLogin();
+            });
+
+            // -----------------------------------------------------------------
+            // 7. TOP NAVBAR, MOBILE DRAWER & DROPDOWN INTERACTIONS
+            // -----------------------------------------------------------------
+            $(document).on('click', '.nav-tab-btn', function () {
+                activeTab = $(this).data('tab');
+                renderNavigation();
+                renderTabContent(activeTab);
+                $('#mobile-nav-drawer').addClass('hidden');
+            });
+
+            $('#brand-home-link').on('click', function (e) {
+                e.preventDefault();
+                activeTab = 'home';
+                renderNavigation();
+                renderTabContent('home');
+            });
+
+            $('#mobile-menu-btn').on('click', function () {
+                $('#mobile-nav-drawer').toggleClass('hidden');
+            });
+
+            $('#user-profile-btn').on('click', function (e) {
+                e.stopPropagation();
+                $('#user-dropdown').toggleClass('hidden');
+            });
+
+            // Close dropdowns when clicking outside
+            $(document).on('click', function () {
+                $('#user-dropdown').addClass('hidden');
+            });
+
+            $('#user-dropdown').on('click', function (e) {
+                e.stopPropagation();
+            });
+
+            // -----------------------------------------------------------------
+            // 8. DYNAMIC CONTENT & MODAL INTERACTIONS
+            // -----------------------------------------------------------------
+            function openModal(title, htmlContent) {
+                $('#modal-title').text(title);
+                $('#modal-body').html(htmlContent);
+                $('#app-modal').removeClass('hidden');
+            }
+
+            $('#close-modal-btn, #app-modal').on('click', function (e) {
+                if (e.target === this || $(e.target).closest('#close-modal-btn').length) {
+                    $('#app-modal').addClass('hidden');
+                }
+            });
+
+            // User Profile & Change Password Modals
+            $(document).on('click', '.user-menu-item', function () {
+                const action = $(this).data('modal-action');
+                $('#user-dropdown').addClass('hidden');
+
+                if (action === 'profile') {
+                    openModal('User Profile Information', `
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-500">Full Name</span>
+                                <span class="font-semibold text-slate-800">${$('#nav-user-name').text()}</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-500">Role</span>
+                                <span class="font-semibold text-blue-600">User (SDP Operations)</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-500">Assigned Channels</span>
+                                <span class="font-semibold text-slate-800">GSD Robi Dob, Robi Dob, Blink Dob, GP Global</span>
+                            </div>
+                            <div class="pt-2 flex justify-end">
+                                <button type="button" id="modal-done-btn" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg">Close</button>
+                            </div>
+                        </div>
+                    `);
+                } else if (action === 'password') {
+                    openModal('Change Account Password', `
+                        <form id="change-pwd-form" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Current Password</label>
+                                <input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">New Password</label>
+                                <input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600">
+                            </div>
+                            <div class="pt-2 flex justify-end gap-2">
+                                <button type="button" id="modal-done-btn" class="px-3.5 py-2 border border-slate-200 text-slate-600 font-semibold rounded-lg">Cancel</button>
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg">Update Password</button>
+                            </div>
+                        </form>
+                    `);
+                }
+            });
+
+            $(document).on('click', '#modal-done-btn', function () {
+                $('#app-modal').addClass('hidden');
+            });
+
+            $(document).on('submit', '#change-pwd-form', function (e) {
+                e.preventDefault();
+                $('#app-modal').addClass('hidden');
+                showToast('Password updated successfully.', 'success');
+            });
+
+            // Live Table Search Filter
+            $(document).on('keyup', '#table-search-input', function () {
+                const query = $(this).val().toLowerCase();
+                $('#txn-table-body tr').each(function () {
+                    const rowText = $(this).text().toLowerCase();
+                    $(this).toggle(rowText.indexOf(query) > -1);
+                });
+            });
+
+            // View Transaction Details Modal
+            $(document).on('click', '.view-txn-btn', function () {
+                const txn = $(this).data('txn');
+                openModal(`Transaction Receipt • ${txn.id}`, `
+                    <div class="space-y-2.5 text-xs">
+                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Transaction ID</span><span class="font-semibold text-slate-800">${txn.id}</span></div>
+                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Subscriber MSISDN</span><span class="font-mono font-semibold text-slate-800">${txn.msisdn}</span></div>
+                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Operator Gateway</span><span class="font-semibold text-slate-800">${txn.operator}</span></div>
+                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Pack</span><span class="font-semibold text-slate-800">${txn.service}</span></div>
+                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Charged Amount</span><span class="font-bold text-blue-600">${txn.amount}</span></div>
+                        <div class="flex justify-between py-1.5"><span class="text-slate-500">Gateway Status</span><span>${getStatusBadge(txn.status)}</span></div>
+                    </div>
+                `);
+            });
+
+            // Refresh & New Service Config Buttons
+            $(document).on('click', '#refresh-data-btn', function () {
+                showToast('Synchronized latest SDP gateway metrics.', 'info');
+            });
+
+            $(document).on('click', '#new-service-btn', function () {
+                openModal('Create New SDP Service Config', `
+                    <form id="create-service-form" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Service Name</label>
+                            <input type="text" required placeholder="e.g., Robi Ultra Gaming Daily" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Operator DOB</label>
+                                <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600">
+                                    <option>GSD Robi Dob</option>
+                                    <option>Robi Dob</option>
+                                    <option>Blink Dob</option>
+                                    <option>GP Global</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Tariff (BDT)</label>
+                                <input type="text" value="5.00" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600">
+                            </div>
+                        </div>
+                        <div class="pt-2 flex justify-end gap-2">
+                            <button type="button" id="modal-done-btn" class="px-3.5 py-2 border border-slate-200 text-slate-600 font-semibold rounded-lg">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg">Save Configuration</button>
+                        </div>
+                    </form>
+                `);
+            });
+
+            $(document).on('submit', '#create-service-form', function (e) {
+                e.preventDefault();
+                $('#app-modal').addClass('hidden');
+                showToast('New SDP service configuration saved and deployed.', 'success');
+            });
+
+            // CSO TOOl Interactions
+            $(document).on('submit', '#cso-search-form', function (e) {
+                e.preventDefault();
+                const msisdn = $.trim($('#cso-msisdn-input').val()) || '8801819204411';
+                $('#cso-res-msisdn').text(msisdn);
+                showToast(`Fetched subscription profile for ${msisdn}`, 'info');
+            });
+
+            $(document).on('click', '#cso-unsub-btn', function () {
+                const msisdn = $('#cso-res-msisdn').text();
+                showToast(`Deactivation request queued for ${msisdn}`, 'success');
+            });
+        });
+    </script>
+</body>
+</html>
