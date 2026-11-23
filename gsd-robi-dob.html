@@ -3,18 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSD Robi Dob - ONE SDP</title>
+    <title>GSD Robi DOB Channel - ONE SDP</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { canvas: '#eef2f6', brandBlue: '#2563eb', brandDark: '#1e293b' }
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    colors: {
+                        canvas: '#f8fafc',
+                        brandBlue: '#2563eb',
+                        brandDark: '#0f172a'
+                    }
                 }
             }
         }
@@ -22,194 +29,380 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        body { background-color: #eef2f6; font-family: 'Inter', sans-serif; }
+        body { background-color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-[#eef2f6] text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
-    <!-- TOP NAVIGATION BAR -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 w-full">
-        <div class="w-full px-3 sm:px-5 h-14 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2 shrink-0">
-                <button type="button" id="mobile-menu-btn" class="xl:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Toggle Menu">
+    
+    <!-- TOP NAVIGATION & BRAND HEADER -->
+    <header class="bg-white border-b border-slate-200/90 sticky top-0 z-40 w-full shadow-2xs backdrop-blur-md bg-white/98">
+        <!-- TOP ROW: BRAND, LIVE STATUS, NOTIFICATIONS & USER PROFILE -->
+        <div class="w-full px-3 sm:px-6 h-14 flex items-center justify-between gap-3 border-b border-slate-100">
+            <!-- Brand & Mobile Toggle -->
+            <div class="flex items-center gap-2.5 shrink-0">
+                <button type="button" id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition" aria-label="Toggle Navigation">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
-                <a href="home.html" class="flex items-center gap-2 select-none pr-2">
-                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-xs">
-                        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <a href="home.html" class="flex items-center gap-2.5 group select-none">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 flex items-center justify-center shadow-xs shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                        <svg class="w-4.5 h-4.5 text-white" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M18 3a1 1 0 0 0-1 .26L11.71 7H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1.22l1.62 4.86A1.5 1.5 0 0 0 10.26 21h1.48a1.5 1.5 0 0 0 1.42-1.97L11.82 15h.11L17 18.74A1 1 0 0 0 18.6 18V4A1 1 0 0 0 18 3zm-1 13.06-4.4-3.06H6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h6.6L17 5.94v10.12zM20.5 8.5a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1z"/>
                         </svg>
                     </div>
-                    <span class="text-[17px] font-bold tracking-tight text-slate-800 whitespace-nowrap">ONE <span class="font-semibold text-slate-700">SDP</span></span>
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-base font-extrabold tracking-tight text-slate-900">ONE<span class="text-blue-600">SDP</span></span>
+                            <span class="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">PROD</span>
+                        </div>
+                        <span class="hidden sm:block text-[10px] font-medium text-slate-400 -mt-1 tracking-tight">Telecom Service Platform</span>
+                    </div>
                 </a>
             </div>
 
-            <nav class="hidden xl:flex items-center h-full overflow-x-auto no-scrollbar space-x-1 flex-1 justify-start pl-3">
-                <a href="home.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg><span>Home</span></a>
-<a href="operation.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Operation</span></a>
-<a href="portal.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Portal</span></a>
-<a href="sdp.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>SDP</span></a>
-<a href="gateway.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Gateway</span></a>
-<a href="marketing.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Marketing</span></a>
-<a href="settings.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Settings</span></a>
-<a href="promotion-report.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Promotion Report</span></a>
-<a href="gsd-robi-dob.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-blue-600 border-b-2 border-blue-600 font-medium"><svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>GSD Robi Dob</span></a>
-<a href="robi-dob.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Robi Dob</span></a>
-<a href="blink-dob.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Blink Dob</span></a>
-<a href="gp-global.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>GP Global</span></a>
-<a href="cso-tool.html" class="h-full px-2.5 flex items-center gap-1.5 text-[12.5px] whitespace-nowrap transition-colors text-slate-700 hover:text-blue-600 border-b-2 border-transparent font-normal"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>CSO TOOl</span></a>
-            </nav>
+            <!-- Global Search Bar -->
+            <div class="hidden md:flex items-center gap-3 flex-1 max-w-sm lg:max-w-md mx-2">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                    <input type="text" id="global-search-input" placeholder="Search MSISDN, Service, Gateway, Campaign..." class="w-full pl-9 pr-8 py-1.5 text-xs bg-slate-50 border border-slate-200/90 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/15 transition">
+                    <span class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none text-[10px] font-mono text-slate-400">⌘K</span>
+                </div>
+            </div>
 
-            <div class="relative shrink-0">
-                <button type="button" id="user-profile-btn" class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-slate-50 transition focus:outline-none">
-                    <div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden">
-                        <svg class="w-6 h-6 text-slate-900 mt-1" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-5.33 0-8 2.67-8 6v2h16v-2c0-3.33-2.67-6-8-6z"/></svg>
-                    </div>
-                    <div class="text-left leading-tight">
-                        <div id="nav-user-name" class="text-xs font-semibold text-slate-800">Rayhan</div>
-                        <div id="nav-user-role" class="text-[11px] text-slate-400 font-normal">User</div>
-                    </div>
-                    <svg class="w-3.5 h-3.5 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
+            <!-- Right System Telemetry, Notifications & User Profile -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <!-- Live System Indicator -->
+                <div class="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-xs font-medium">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-[11px] font-semibold">99.99% Uptime</span>
+                    <span class="text-slate-300">|</span>
+                    <span class="text-[11px] font-mono font-medium text-emerald-800">142 TPS</span>
+                </div>
 
-                <div id="user-dropdown" class="hidden absolute right-0 mt-1.5 w-52 bg-white rounded-xl shadow-lg border border-slate-200 py-1.5 z-40">
-                    <div class="px-4 py-2.5 border-b border-slate-100">
-                        <p class="text-xs font-semibold text-slate-800" id="dropdown-user-name">Rayhan</p>
-                        <p class="text-[11px] text-slate-500 truncate" id="dropdown-user-email">rayhan@onesdp.com</p>
+                <!-- Notifications Button & Dropdown -->
+                <div class="relative">
+                    <button type="button" id="notif-btn" class="p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition relative" aria-label="Notifications">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600 ring-2 ring-white"></span>
+                    </button>
+                    <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50">
+                        <div class="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-800">System Notifications</span>
+                            <span class="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">3 New</span>
+                        </div>
+                        <div class="divide-y divide-slate-100 text-xs">
+                            <div class="p-3 hover:bg-slate-50 transition">
+                                <p class="font-semibold text-slate-800">Robi DOB TPS Peak Alert</p>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Surged to 84 TPS during promotional campaign blast.</p>
+                                <span class="text-[10px] text-slate-400 mt-1 block">5 mins ago</span>
+                            </div>
+                            <div class="p-3 hover:bg-slate-50 transition">
+                                <p class="font-semibold text-slate-800">Blink DOB Daily Renewal Completed</p>
+                                <p class="text-[11px] text-slate-500 mt-0.5">95.9% charging success rate recorded.</p>
+                                <span class="text-[10px] text-slate-400 mt-1 block">18 mins ago</span>
+                            </div>
+                            <div class="p-3 hover:bg-slate-50 transition">
+                                <p class="font-semibold text-slate-800">GP Global Token Auto-Renewed</p>
+                                <p class="text-[11px] text-slate-500 mt-0.5">OAuth session refreshed successfully.</p>
+                                <span class="text-[10px] text-slate-400 mt-1 block">1 hour ago</span>
+                            </div>
+                        </div>
                     </div>
-                    <button type="button" data-modal-action="profile" class="user-menu-item w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                        <span>My Profile</span>
+                </div>
+
+                <!-- User Profile & Dropdown -->
+                <div class="relative">
+                    <button type="button" id="user-profile-btn" class="flex items-center gap-2 py-1 px-1.5 sm:px-2 rounded-lg hover:bg-slate-100 transition focus:outline-none">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-900 to-slate-700 text-white flex items-center justify-center font-bold text-xs ring-2 ring-blue-500/20 shadow-xs">
+                            <span id="user-avatar-text">R</span>
+                        </div>
+                        <div class="hidden sm:block text-left leading-tight">
+                            <div id="nav-user-name" class="text-xs font-bold text-slate-800">Rayhan</div>
+                            <div id="nav-user-role" class="text-[10px] text-slate-400 font-medium">Telecom Admin</div>
+                        </div>
+                        <svg class="w-3.5 h-3.5 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <button type="button" data-modal-action="password" class="user-menu-item w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-                        <span>Change Password</span>
-                    </button>
-                    <div class="my-1 border-t border-slate-100"></div>
-                    <a href="login.html" id="logout-btn" class="w-full text-left px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2.5">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                        <span>Logout</span>
-                    </a>
+
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50">
+                        <div class="px-4 py-3 border-b border-slate-100 bg-slate-50/50">
+                            <p class="text-xs font-bold text-slate-900" id="dropdown-user-name">Rayhan</p>
+                            <p class="text-[11px] text-slate-500 truncate" id="dropdown-user-email">rayhan@onesdp.com</p>
+                            <span class="inline-block mt-1 px-2 py-0.5 text-[9px] font-semibold bg-blue-50 text-blue-700 border border-blue-200/60 rounded">Admin Level Access</span>
+                        </div>
+                        <div class="py-1">
+                            <button type="button" data-modal-action="profile" class="user-menu-item w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                <span>My Profile</span>
+                            </button>
+                            <button type="button" data-modal-action="password" class="user-menu-item w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                                <span>Change Password</span>
+                            </button>
+                            <a href="settings.html" class="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>Platform Security</span>
+                            </a>
+                        </div>
+                        <div class="border-t border-slate-100 my-1"></div>
+                        <div class="py-1">
+                            <a href="login.html" id="logout-btn" class="w-full text-left px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition">
+                                <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-nav-drawer" class="hidden xl:hidden bg-white border-t border-slate-200 px-3 py-3 max-h-[75vh] overflow-y-auto shadow-md">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1"><a href="home.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg><span>Home</span></a>
-<a href="operation.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Operation</span></a>
-<a href="portal.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Portal</span></a>
-<a href="sdp.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>SDP</span></a>
-<a href="gateway.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Gateway</span></a>
-<a href="marketing.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Marketing</span></a>
-<a href="settings.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Settings</span></a>
-<a href="promotion-report.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Promotion Report</span></a>
-<a href="gsd-robi-dob.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition bg-blue-50 text-blue-600 font-semibold border border-blue-200"><svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>GSD Robi Dob</span></a>
-<a href="robi-dob.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Robi Dob</span></a>
-<a href="blink-dob.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Blink Dob</span></a>
-<a href="gp-global.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>GP Global</span></a>
-<a href="cso-tool.html" class="w-full px-3 py-2.5 rounded-lg flex items-center gap-2.5 text-xs text-left transition text-slate-700 hover:bg-slate-50 font-medium border border-transparent"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>CSO TOOl</span></a></div>
+        <!-- ROW 2: DEDICATED TOP NAVIGATION MENU BAR ("menu item gula uporey thakbe") -->
+        <div class="w-full bg-slate-50/90 border-t border-slate-200/70 px-2 sm:px-6 relative shadow-inner">
+            <div class="flex items-center justify-between gap-1 py-1.5">
+                <!-- Scroll Left Arrow (Visible on Overflow) -->
+                <button type="button" id="nav-scroll-left" class="hidden sm:flex shrink-0 p-1 rounded-md text-slate-400 hover:text-slate-800 hover:bg-slate-200 transition" aria-label="Scroll Left">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+
+                <!-- Navigation Items Container -->
+                <div class="flex-1 overflow-x-auto no-scrollbar scroll-smooth" id="nav-scroll-container">
+                    <nav class="flex items-center gap-1.5 w-max">
+                        <a href="home.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>Home</span></a>
+<a href="operation.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Operation</span></a>
+<a href="portal.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Portal</span></a>
+<a href="sdp.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg><span>SDP</span></a>
+<a href="gateway.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Gateway</span></a>
+<a href="marketing.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg><span>Marketing</span></a>
+<a href="settings.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Settings</span></a>
+<a href="promotion-report.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><span>Promotion Report</span></a>
+<a href="gsd-robi-dob.html" class="px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-semibold whitespace-nowrap bg-blue-600 text-white shadow-xs transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg><span>GSD Robi Dob</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-red-50 text-red-600 border border-red-200">Robi</span></a>
+<a href="robi-dob.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg><span>Robi Dob</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-red-50 text-red-600 border border-red-200">Robi</span></a>
+<a href="blink-dob.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Blink Dob</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-amber-50 text-amber-700 border border-amber-200">BL</span></a>
+<a href="gp-global.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>GP Global</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-sky-50 text-sky-700 border border-sky-200">GP</span></a>
+<a href="cso-tool.html" class="group px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-medium whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 transition-all"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>CSO TOOl</span></a>
+                    </nav>
+                </div>
+
+                <!-- Scroll Right Arrow (Visible on Overflow) -->
+                <button type="button" id="nav-scroll-right" class="hidden sm:flex shrink-0 p-1 rounded-md text-slate-400 hover:text-slate-800 hover:bg-slate-200 transition" aria-label="Scroll Right">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOBILE / TABLET RESPONSIVE DRAWER -->
+        <div id="mobile-nav-drawer" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 py-3.5 max-h-[80vh] overflow-y-auto shadow-xl">
+            <div class="pb-2 mb-2 border-b border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <span>Top Navigation Menu</span>
+                <span class="text-[10px] text-blue-600 font-semibold">13 Modules</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                <a href="home.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>Home</span></a>
+<a href="operation.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Operation</span></a>
+<a href="portal.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Portal</span></a>
+<a href="sdp.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg><span>SDP</span></a>
+<a href="gateway.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Gateway</span></a>
+<a href="marketing.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg><span>Marketing</span></a>
+<a href="settings.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Settings</span></a>
+<a href="promotion-report.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><span>Promotion Report</span></a>
+<a href="gsd-robi-dob.html" class="px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-semibold bg-blue-600 text-white shadow-sm"><svg class="w-3.5 h-3.5 shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg><span>GSD Robi Dob</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-red-50 text-red-600 border border-red-200">Robi</span></a>
+<a href="robi-dob.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg><span>Robi Dob</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-red-50 text-red-600 border border-red-200">Robi</span></a>
+<a href="blink-dob.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Blink Dob</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-amber-50 text-amber-700 border border-amber-200">BL</span></a>
+<a href="gp-global.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>GP Global</span><span class="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold tracking-tight bg-sky-50 text-sky-700 border border-sky-200">GP</span></a>
+<a href="cso-tool.html" class="group px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200/50"><svg class="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>CSO TOOl</span></a>
+            </div>
         </div>
     </header>
     
-    <main class="flex-1 w-full max-w-[1600px] mx-auto px-4 sm:px-6 py-6 space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <main class="flex-1 w-full max-w-[1600px] mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
             <div>
+                <nav class="flex items-center gap-2 text-xs font-medium text-slate-400 mb-1">
+                    <span>ONE SDP Platform</span>
+                    <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <span>Carrier Gateways</span>
+                    <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <span class="text-blue-600 font-semibold">GSD Robi DOB</span>
+                </nav>
                 <div class="flex items-center gap-2.5">
-                    <h1 class="text-lg font-bold text-slate-800">GSD Robi DOB Channel</h1>
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-red-50 text-red-700 border border-red-200">Robi Axiata API</span>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900">GSD Robi DOB Channel</h1>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                        Robi Axiata API
+                    </span>
                 </div>
-                <p class="text-xs text-slate-500 mt-0.5">Direct Operator Billing integration and AOC consent logs for GSD Robi services.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Direct Operator Billing integration, Advice of Charge (AOC) consent records, and daily renewal logs for GSD services.</p>
             </div>
-            <div class="flex items-center gap-2">
-                <button type="button" onclick="showToast('AOC consent synced with Robi', 'info')" class="px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Sync AOC Logs</button>
+            <div class="flex items-center gap-2.5 shrink-0">
+                <button type="button" onclick="showToast('AOC consent synced with Robi gateway', 'info')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-xs hover:shadow-sm transition flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Sync AOC Consent Logs</span>
+                </button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs"><p class="text-xs text-slate-500">Today's Revenue</p><p class="text-xl font-bold text-slate-800 mt-1">৳ 184,200</p></div>
-            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs"><p class="text-xs text-slate-500">Active Robi Subs</p><p class="text-xl font-bold text-slate-800 mt-1">412,000</p></div>
-            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs"><p class="text-xs text-slate-500">AOC Consent Rate</p><p class="text-xl font-bold text-slate-800 mt-1">76.2%</p></div>
-            <div class="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs"><p class="text-xs text-slate-500">Daily Charging Success</p><p class="text-xl font-bold text-emerald-600 mt-1">97.1%</p></div>
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs hover:shadow-xs transition group">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Today's Revenue</span>
+                    <div class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold text-sm shadow-xs group-hover:scale-105 transition-transform">৳</div>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-2xl font-black text-slate-900 tracking-tight">৳ 184,200</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">↑ +5.4%</span>
+                </div>
+                <div class="mt-3 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-red-500 rounded-full" style="width: 78%"></div></div>
+                <p class="text-[11px] text-slate-400 mt-2 font-medium">GSD channel billing</p>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs hover:shadow-xs transition group">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Robi Subs</span>
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm shadow-xs group-hover:scale-105 transition-transform">👥</div>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-2xl font-black text-slate-900 tracking-tight">412,000</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">+2.8%</span>
+                </div>
+                <div class="mt-3 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-600 rounded-full" style="width: 68%"></div></div>
+                <p class="text-[11px] text-slate-400 mt-2 font-medium">GSD gaming pack base</p>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs hover:shadow-xs transition group">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">AOC Consent Rate</span>
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm shadow-xs group-hover:scale-105 transition-transform">✓</div>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-2xl font-black text-slate-900 tracking-tight">76.2%</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">High Trust</span>
+                </div>
+                <div class="mt-3 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-amber-500 rounded-full" style="width: 76%"></div></div>
+                <p class="text-[11px] text-slate-400 mt-2 font-medium">Robi user consent completion</p>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs hover:shadow-xs transition group">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Charging Success</span>
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm shadow-xs group-hover:scale-105 transition-transform">⚡</div>
+                </div>
+                <div class="mt-3 flex items-baseline justify-between">
+                    <span class="text-2xl font-black text-slate-900 tracking-tight">97.1%</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Optimal</span>
+                </div>
+                <div class="mt-3 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width: 97%"></div></div>
+                <p class="text-[11px] text-slate-400 mt-2 font-medium">Daily recurring success</p>
+            </div>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200/80 shadow-2xs overflow-hidden">
-            <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
-                <h2 class="text-sm font-bold text-slate-800">GSD Robi Charging & Consent Ledger</h2>
-                <input type="text" id="table-search-input" placeholder="Search MSISDN or ID..." class="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg">
+        <div class="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
+            <div class="px-6 py-4.5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/40">
+                <div class="flex items-center gap-2.5">
+                    <h2 class="text-sm font-bold text-slate-900">GSD Robi Charging & Consent Ledger</h2>
+                    <span id="search-count" class="text-xs font-semibold text-blue-600"></span>
+                </div>
+                <div class="relative">
+                    <input type="text" id="table-search-input" placeholder="Search MSISDN or Txn ID..." class="w-full sm:w-64 pl-9 pr-3 py-1.5 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition">
+                    <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/80 border-b border-slate-200/70 text-[11px] font-semibold text-slate-500 uppercase">
-                            <th class="px-4 py-3">Txn ID</th><th class="px-4 py-3">MSISDN</th><th class="px-4 py-3">Operator</th><th class="px-4 py-3">Service</th><th class="px-4 py-3">Tariff</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Time</th><th class="px-4 py-3 text-right">Action</th>
+                        <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                            <th class="px-5 py-3.5">Txn ID</th>
+                            <th class="px-5 py-3.5">MSISDN</th>
+                            <th class="px-5 py-3.5">Operator</th>
+                            <th class="px-5 py-3.5">Service</th>
+                            <th class="px-5 py-3.5">Tariff</th>
+                            <th class="px-5 py-3.5">Status</th>
+                            <th class="px-5 py-3.5">Time</th>
+                            <th class="px-5 py-3.5 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        
-        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 last:border-none">
-            <td class="px-4 py-3 text-xs font-semibold text-blue-600 whitespace-nowrap">TXN-984210</td>
-            <td class="px-4 py-3 text-xs font-mono text-slate-700 whitespace-nowrap">8801819204411</td>
-            <td class="px-4 py-3 text-xs font-medium text-slate-700 whitespace-nowrap">Robi Dob</td>
-            <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">GSD Gaming Pack Daily</td>
-            <td class="px-4 py-3 text-xs font-semibold text-slate-800 whitespace-nowrap">৳ 5.00</td>
-            <td class="px-4 py-3 whitespace-nowrap"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Success</span></td>
-            <td class="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">2 mins ago</td>
-            <td class="px-4 py-3 text-right whitespace-nowrap">
-                <button type="button" class="view-txn-btn text-xs font-medium text-blue-600 hover:text-blue-800 hover:underline">Details</button>
-            </td>
-        </tr>
-        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 last:border-none">
-            <td class="px-4 py-3 text-xs font-semibold text-blue-600 whitespace-nowrap">TXN-984207</td>
-            <td class="px-4 py-3 text-xs font-mono text-slate-700 whitespace-nowrap">8801847112233</td>
-            <td class="px-4 py-3 text-xs font-medium text-slate-700 whitespace-nowrap">GSD Robi Dob</td>
-            <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">Robi Sports Live Weekly</td>
-            <td class="px-4 py-3 text-xs font-semibold text-slate-800 whitespace-nowrap">৳ 20.00</td>
-            <td class="px-4 py-3 whitespace-nowrap"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Pending</span></td>
-            <td class="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">9 mins ago</td>
-            <td class="px-4 py-3 text-right whitespace-nowrap">
-                <button type="button" class="view-txn-btn text-xs font-medium text-blue-600 hover:text-blue-800 hover:underline">Details</button>
-            </td>
-        </tr>
-        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 last:border-none">
-            <td class="px-4 py-3 text-xs font-semibold text-blue-600 whitespace-nowrap">TXN-984204</td>
-            <td class="px-4 py-3 text-xs font-mono text-slate-700 whitespace-nowrap">8801817654321</td>
-            <td class="px-4 py-3 text-xs font-medium text-slate-700 whitespace-nowrap">Robi Dob</td>
-            <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">Robi E-Book Unlimited</td>
-            <td class="px-4 py-3 text-xs font-semibold text-slate-800 whitespace-nowrap">৳ 10.00</td>
-            <td class="px-4 py-3 whitespace-nowrap"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Success</span></td>
-            <td class="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">18 mins ago</td>
-            <td class="px-4 py-3 text-right whitespace-nowrap">
-                <button type="button" class="view-txn-btn text-xs font-medium text-blue-600 hover:text-blue-800 hover:underline">Details</button>
-            </td>
-        </tr>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-blue-50/30 transition">
+                            <td class="px-5 py-3.5 font-mono font-semibold text-blue-600">TXN-984210</td>
+                            <td class="px-5 py-3.5 font-mono text-slate-700">8801819204411</td>
+                            <td class="px-5 py-3.5 font-medium text-slate-800"><span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Robi Dob</span></td>
+                            <td class="px-5 py-3.5 text-slate-600">GSD Gaming Pack Daily</td>
+                            <td class="px-5 py-3.5 font-bold text-slate-900">৳ 5.00</td>
+                            <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Success</span></td>
+                            <td class="px-5 py-3.5 text-slate-400">2 mins ago</td>
+                            <td class="px-5 py-3.5 text-right"><button type="button" class="view-txn-btn px-3 py-1 rounded-lg text-xs font-semibold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition">Details</button></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition">
+                            <td class="px-5 py-3.5 font-mono font-semibold text-blue-600">TXN-984207</td>
+                            <td class="px-5 py-3.5 font-mono text-slate-700">8801847112233</td>
+                            <td class="px-5 py-3.5 font-medium text-slate-800"><span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>GSD Robi Dob</span></td>
+                            <td class="px-5 py-3.5 text-slate-600">Robi Sports Live Weekly</td>
+                            <td class="px-5 py-3.5 font-bold text-slate-900">৳ 20.00</td>
+                            <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Pending</span></td>
+                            <td class="px-5 py-3.5 text-slate-400">9 mins ago</td>
+                            <td class="px-5 py-3.5 text-right"><button type="button" class="view-txn-btn px-3 py-1 rounded-lg text-xs font-semibold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition">Details</button></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition">
+                            <td class="px-5 py-3.5 font-mono font-semibold text-blue-600">TXN-984204</td>
+                            <td class="px-5 py-3.5 font-mono text-slate-700">8801817654321</td>
+                            <td class="px-5 py-3.5 font-medium text-slate-800"><span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Robi Dob</span></td>
+                            <td class="px-5 py-3.5 text-slate-600">Robi E-Book Unlimited</td>
+                            <td class="px-5 py-3.5 font-bold text-slate-900">৳ 10.00</td>
+                            <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Success</span></td>
+                            <td class="px-5 py-3.5 text-slate-400">18 mins ago</td>
+                            <td class="px-5 py-3.5 text-right"><button type="button" class="view-txn-btn px-3 py-1 rounded-lg text-xs font-semibold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition">Details</button></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
-
+    
+    <!-- TOAST CONTAINER -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <div id="app-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-[1px] flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-xl border border-slate-200 w-full max-w-lg overflow-hidden transform transition-all">
-            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-                <h3 id="modal-title" class="text-sm font-bold text-slate-800">Modal Title</h3>
-                <button type="button" id="close-modal-btn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+    <!-- REUSABLE APPLICATION MODAL -->
+    <div id="app-modal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200/90 w-full max-w-lg overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 id="modal-title" class="text-sm font-bold text-slate-900">Modal Title</h3>
+                <button type="button" id="close-modal-btn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div id="modal-body" class="p-5 text-sm text-slate-600"></div>
+            <div id="modal-body" class="p-5 text-sm text-slate-600 max-h-[80vh] overflow-y-auto"></div>
         </div>
     </div>
 
+    <!-- SHARED CLIENT LOGIC -->
     <script>
         $(document).ready(function () {
             window.showToast = function(msg, type = 'success') {
-                const bgMap = { success: 'bg-slate-800 text-white', info: 'bg-blue-600 text-white', error: 'bg-red-600 text-white' };
-                const toast = $(`<div class="pointer-events-auto px-4 py-2.5 rounded-lg shadow-lg text-xs font-medium flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-2 ${bgMap[type] || bgMap.success}"><span>${msg}</span></div>`);
+                const icons = {
+                    success: '<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>',
+                    info: '<svg class="w-4 h-4 text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    error: '<svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
+                };
+                const bgMap = {
+                    success: 'bg-slate-900 text-white border-slate-800 shadow-xl',
+                    info: 'bg-blue-600 text-white border-blue-500 shadow-xl',
+                    error: 'bg-rose-600 text-white border-rose-500 shadow-xl'
+                };
+                const toast = $(`
+                    <div class="pointer-events-auto px-4 py-3 rounded-xl border text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 opacity-0 translate-y-2 ${bgMap[type] || bgMap.success}">
+                        ${icons[type] || icons.success}
+                        <span>${msg}</span>
+                    </div>
+                `);
                 $('#toast-container').append(toast);
                 setTimeout(() => toast.removeClass('opacity-0 translate-y-2'), 10);
-                setTimeout(() => { toast.addClass('opacity-0 translate-y-2'); setTimeout(() => toast.remove(), 300); }, 3000);
+                setTimeout(() => {
+                    toast.addClass('opacity-0 translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
             };
 
             window.openModal = function(title, html) {
@@ -230,35 +423,87 @@
             $('#user-profile-btn').on('click', function (e) {
                 e.stopPropagation();
                 $('#user-dropdown').toggleClass('hidden');
+                $('#notif-dropdown').addClass('hidden');
             });
 
-            $(document).on('click', function () { $('#user-dropdown').addClass('hidden'); });
-            $('#user-dropdown').on('click', function (e) { e.stopPropagation(); });
+            $('#notif-btn').on('click', function (e) {
+                e.stopPropagation();
+                $('#notif-dropdown').toggleClass('hidden');
+                $('#user-dropdown').addClass('hidden');
+            });
+
+            $(document).on('click', function () {
+                $('#user-dropdown').addClass('hidden');
+                $('#notif-dropdown').addClass('hidden');
+            });
+
+            $('#user-dropdown, #notif-dropdown').on('click', function (e) { e.stopPropagation(); });
+
+            // Smooth Horizontal Scroll Buttons for Top Navbar
+            $('#nav-scroll-left').on('click', function () {
+                const el = document.getElementById('nav-scroll-container');
+                el.scrollBy({ left: -200, behavior: 'smooth' });
+            });
+            $('#nav-scroll-right').on('click', function () {
+                const el = document.getElementById('nav-scroll-container');
+                el.scrollBy({ left: 200, behavior: 'smooth' });
+            });
+
+            // Global search trigger
+            $('#global-search-input').on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    const val = $.trim($(this).val());
+                    if (val) {
+                        showToast(`Searching for "${val}" across Telecom records...`, 'info');
+                    }
+                }
+            });
+
+            // Global ⌘K shortcut
+            $(document).on('keydown', function(e) {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    $('#global-search-input').focus();
+                }
+            });
 
             const savedEmail = sessionStorage.getItem('onesdp_user_email') || 'rayhan@onesdp.com';
             const name = savedEmail.includes('rayhan') ? 'Rayhan' : savedEmail.split('@')[0];
             const formatted = name.charAt(0).toUpperCase() + name.slice(1);
             $('#nav-user-name, #dropdown-user-name').text(formatted);
             $('#dropdown-user-email').text(savedEmail);
+            $('#user-avatar-text').text(formatted.charAt(0));
 
             $(document).on('click', '.user-menu-item', function () {
                 const action = $(this).data('modal-action');
                 $('#user-dropdown').addClass('hidden');
                 if (action === 'profile') {
-                    openModal('User Profile Information', `
+                    openModal('Telecom Operator Profile', `
                         <div class="space-y-3 text-xs">
-                            <div class="flex justify-between py-2 border-b border-slate-100"><span class="text-slate-500">Full Name</span><span class="font-semibold text-slate-800">${$('#nav-user-name').text()}</span></div>
-                            <div class="flex justify-between py-2 border-b border-slate-100"><span class="text-slate-500">Role</span><span class="font-semibold text-blue-600">User (SDP Operations)</span></div>
-                            <div class="flex justify-between py-2 border-b border-slate-100"><span class="text-slate-500">Assigned Channels</span><span class="font-semibold text-slate-800">GSD Robi Dob, Robi Dob, Blink Dob, GP Global</span></div>
-                            <div class="pt-2 flex justify-end"><button type="button" id="modal-done-btn" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg">Close</button></div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200/80 mb-3">
+                                <div class="w-12 h-12 rounded-full bg-blue-600 text-white font-bold text-base flex items-center justify-center">${formatted.charAt(0)}</div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-slate-800">${formatted}</h4>
+                                    <p class="text-slate-500">${savedEmail}</p>
+                                    <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Active Session</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100"><span class="text-slate-500">Security Clearance</span><span class="font-semibold text-slate-800">Telecom Level 4 (Operations)</span></div>
+                            <div class="flex justify-between py-2 border-b border-slate-100"><span class="text-slate-500">Assigned Gateways</span><span class="font-semibold text-blue-600">Robi, Banglalink, GP Global</span></div>
+                            <div class="flex justify-between py-2 border-b border-slate-100"><span class="text-slate-500">Last Login IP</span><span class="font-mono text-slate-600">103.242.24.18 (Whitelisted)</span></div>
+                            <div class="pt-3 flex justify-end"><button type="button" id="modal-done-btn" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-xl text-xs shadow-xs hover:bg-blue-700 transition">Close</button></div>
                         </div>
                     `);
                 } else if (action === 'password') {
                     openModal('Change Account Password', `
-                        <form id="change-pwd-form" class="space-y-3 text-xs">
-                            <div><label class="block font-semibold text-slate-700 mb-1">Current Password</label><input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-lg"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">New Password</label><input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-lg"></div>
-                            <div class="pt-2 flex justify-end gap-2"><button type="button" id="modal-done-btn" class="px-3.5 py-2 border border-slate-200 text-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Update</button></div>
+                        <form id="change-pwd-form" class="space-y-3.5 text-xs">
+                            <div><label class="block font-semibold text-slate-700 mb-1">Current Password</label><input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:border-blue-600 focus:outline-none"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1">New Password</label><input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:border-blue-600 focus:outline-none"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1">Confirm New Password</label><input type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:border-blue-600 focus:outline-none"></div>
+                            <div class="pt-2 flex justify-end gap-2">
+                                <button type="button" id="modal-done-btn" class="px-3.5 py-2 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 font-medium">Cancel</button>
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-semibold shadow-xs">Update Password</button>
+                            </div>
                         </form>
                     `);
                 }
@@ -277,50 +522,42 @@
 
             $(document).on('keyup', '#table-search-input', function () {
                 const q = $(this).val().toLowerCase();
+                let matchCount = 0;
                 $('tbody tr').each(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(q) > -1);
+                    const match = $(this).text().toLowerCase().indexOf(q) > -1;
+                    $(this).toggle(match);
+                    if (match) matchCount++;
                 });
+                $('#search-count').text(q ? `(${matchCount} found)` : '');
             });
 
-            $(document).on('click', '.view-txn-btn', function () {
-                const row = $(this).closest('tr');
-                const txnId = row.find('td:eq(0)').text().trim();
-                const msisdn = row.find('td:eq(1)').text().trim();
-                const operator = row.find('td:eq(2)').text().trim();
-                const service = row.find('td:eq(3)').text().trim();
-                const amount = row.find('td:eq(4)').text().trim();
-                const status = row.find('td:eq(5)').text().trim();
+            
+$(document).on('click', '.view-txn-btn', function () {
+    const row = $(this).closest('tr');
+    const txnId = row.find('td:eq(0)').text().trim();
+    const msisdn = row.find('td:eq(1)').text().trim();
+    const operator = row.find('td:eq(2)').text().trim();
+    const service = row.find('td:eq(3)').text().trim();
+    const amount = row.find('td:eq(4)').text().trim();
+    const status = row.find('td:eq(5)').text().trim();
 
-                openModal(`Transaction Receipt • ${txnId}`, `
-                    <div class="space-y-2.5 text-xs">
-                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Transaction ID</span><span class="font-semibold text-slate-800">${txnId}</span></div>
-                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Subscriber MSISDN</span><span class="font-mono font-semibold text-slate-800">${msisdn}</span></div>
-                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Operator Gateway</span><span class="font-semibold text-slate-800">${operator}</span></div>
-                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Pack</span><span class="font-semibold text-slate-800">${service}</span></div>
-                        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Charged Amount</span><span class="font-bold text-blue-600">${amount}</span></div>
-                        <div class="flex justify-between py-1.5"><span class="text-slate-500">Gateway Status</span><span class="font-semibold text-emerald-700">${status}</span></div>
-                    </div>
-                `);
-            });
+    openModal(`Transaction Receipt • ${txnId}`, `
+        <div class="space-y-3 text-xs">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+                <div class="flex justify-between items-center"><span class="text-slate-500">Transaction ID</span><span class="font-mono font-bold text-blue-600">${txnId}</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500">Subscriber MSISDN</span><span class="font-mono font-semibold text-slate-800">${msisdn}</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500">Operator Gateway</span><span class="font-semibold text-slate-800">${operator}</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500">Service Pack</span><span class="font-semibold text-slate-800">${service}</span></div>
+                <div class="flex justify-between items-center pt-2 border-t border-slate-200"><span class="text-slate-500">Charged Amount</span><span class="text-base font-extrabold text-slate-900">${amount}</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500">Status</span><span class="font-semibold text-emerald-700">${status}</span></div>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button type="button" id="modal-done-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition">Done</button>
+            </div>
+        </div>
+    `);
+});
 
-            $(document).on('click', '#refresh-data-btn', function () { showToast('Synchronized latest metrics.', 'info'); });
-            $(document).on('click', '#new-service-btn', function () {
-                openModal('Create New SDP Service Config', `
-                    <form id="create-service-form" class="space-y-3 text-xs">
-                        <div><label class="block font-semibold text-slate-700 mb-1">Service Name</label><input type="text" required placeholder="e.g., Robi Ultra Gaming Daily" class="w-full px-3 py-2 border border-slate-300 rounded-lg"></div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div><label class="block font-semibold text-slate-700 mb-1">Operator DOB</label><select class="w-full px-3 py-2 border border-slate-300 rounded-lg"><option>GSD Robi Dob</option><option>Robi Dob</option><option>Blink Dob</option><option>GP Global</option></select></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">Tariff (BDT)</label><input type="text" value="5.00" class="w-full px-3 py-2 border border-slate-300 rounded-lg"></div>
-                        </div>
-                        <div class="pt-2 flex justify-end gap-2"><button type="button" id="modal-done-btn" class="px-3.5 py-2 border border-slate-200 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Save Config</button></div>
-                    </form>
-                `);
-            });
-            $(document).on('submit', '#create-service-form', function(e) {
-                e.preventDefault();
-                $('#app-modal').addClass('hidden');
-                showToast('New service configuration saved & deployed.', 'success');
-            });
         });
     </script>
 </body>
